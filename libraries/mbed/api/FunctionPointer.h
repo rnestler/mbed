@@ -78,9 +78,8 @@ private:
     template<typename T>
     static void membercaller(void *object, char *member) {
         T* o = static_cast<T*>(object);
-        void (T::*m)(void);
-        memcpy((char*)&m, member, sizeof(m));
-        (o->*m)();
+        typedef void (T::*MemFun)(void);
+        (o->*reinterpret_cast<MemFun>(member))();
     }
 
     void (*_function)(void);             // static function pointer - 0 if none attached
